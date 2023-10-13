@@ -33,8 +33,8 @@ app.post('/api/enroll', async (req, res) => {
 	const { firstname, middlename, lastname, birthday, gender, username, email, password } = req.body;
 
 	// Check if any of the required fields is missing
-	if (!firstname || !middlename || !lastname || !birthday || !gender || !username || !email || !password ||
-		firstname=="" || middlename=="" || lastname=="" || birthday=="" || gender=="" || username=="" || email=="" || password=="") {
+	if (!firstname || !lastname || !birthday || !gender || !username || !email || !password ||
+		firstname=="" || lastname=="" || birthday=="" || gender=="" || username=="" || email=="" || password=="") {
 		return res.status(400).json({ error: 'All fields are required' });
 	}
 

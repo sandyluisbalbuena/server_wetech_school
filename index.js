@@ -32,6 +32,11 @@ app.post('/api/enroll', async (req, res) => {
 
 	const { firstname, middlename, lastname, birthday, gender, username, email, password } = req.body;
 
+	// Check if any of the required fields is missing
+	if (!firstname || !middlename || !lastname || !birthday || !gender || !username || !email || !password) {
+		return res.status(400).json({ error: 'All fields are required' });
+	}
+
 	try {
 		
 		await firebase.auth().createUserWithEmailAndPassword(email, password);
@@ -39,6 +44,7 @@ app.post('/api/enroll', async (req, res) => {
 		const role = 'student';
 		const image = 'pikachu';
 		const userRef = firebase.database().ref(`users/${userId}`);
+
 		userRef.set({
 			firstname,
 			middlename,

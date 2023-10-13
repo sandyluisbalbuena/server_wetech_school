@@ -39,11 +39,10 @@ app.post('/api/enroll', async (req, res) => {
 	}
 
 	try {
-		
 		await firebase.auth().createUserWithEmailAndPassword(email, password);
 		const userId = firebase.auth().currentUser.uid;
 		const role = 'student';
-		const image = 'pikachu';
+		const image = 'caterpie';
 		const status = 'pending';
 		const batch = 'pending';
 		const userRef = firebase.database().ref(`users/${userId}`);

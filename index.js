@@ -44,6 +44,7 @@ app.post('/api/enroll', async (req, res) => {
 		const userId = firebase.auth().currentUser.uid;
 		const role = 'student';
 		const image = 'pikachu';
+		const status = 'pending';
 		const userRef = firebase.database().ref(`users/${userId}`);
 
 		userRef.set({
@@ -55,7 +56,8 @@ app.post('/api/enroll', async (req, res) => {
 			username,
 			email,
 			role,
-			image
+			image,
+			status
 		});
 
 		res.status(200).json({ message: "User added successfully" });

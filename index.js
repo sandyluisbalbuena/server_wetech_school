@@ -30,11 +30,11 @@ app.get('/api/users', async (req, res) => {
 // Endpoint to add a new user
 app.post('/api/enroll', async (req, res) => {
 
-	const { firstname, middlename, lastname, birthday, gender, username, email, password } = req.body;
+	const { firstname, middlename, lastname, birthday, gender, discordId, email, password } = req.body;
 
 	// Check if any of the required fields is missing
-	if (!firstname || !lastname || !birthday || !gender || !username || !email || !password ||
-		firstname=="" || lastname=="" || birthday=="" || gender=="" || username=="" || email=="" || password=="") {
+	if (!firstname || !lastname || !birthday || !gender || !discordId || !email || !password ||
+		firstname=="" || lastname=="" || birthday=="" || gender=="" || discordId=="" || email=="" || password=="") {
 		return res.status(400).json({ error: 'All fields are required' });
 	}
 
@@ -53,7 +53,7 @@ app.post('/api/enroll', async (req, res) => {
 			lastname,
 			birthday,
 			gender,
-			username,
+			discordId,
 			email,
 			role,
 			image,

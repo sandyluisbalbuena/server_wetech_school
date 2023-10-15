@@ -32,24 +32,17 @@ app.post('/api/enroll', async (req, res) => {
 
 	const { firstname, middlename, lastname, birthday, gender, discordId, email, password, username } = req.body;
 
-	// Check if any of the required fields is missing
-
 	const items = Object.entries(req.body);
-
-
 
 	const errorMess = [];
 
 	try{
 		for (const [key, value] of items) {
-
 			if(!value)
 			{
 				errorMess.push([key, "is required.."])
 			}
 		}
-
-		
 		
 	}catch(error){
 		console.log(error)
@@ -60,11 +53,6 @@ app.post('/api/enroll', async (req, res) => {
 	if(errorMess.length){
 		return res.status(505).json({ error:  errorMess});
 	}
-
-	// if (!firstname || !lastname || !birthday || !gender || !discordId || !email || !password ||
-	// 	firstname=="" || lastname=="" || birthday=="" || gender=="" || discordId=="" || email=="" || password=="") {
-	// 	return res.status(400).json({ error: 'All fields are required' });
-	// }
 
 	try {
 		await firebase.auth().createUserWithEmailAndPassword(username, password);

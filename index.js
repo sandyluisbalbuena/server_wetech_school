@@ -62,17 +62,10 @@ app.post('/api/enroll', async (req, res) => {
 		return res.status(505).json({ error:  errorMess});
 	}
 
-
-
-	
-
-
-
-
-	if (!firstname || !lastname || !birthday || !gender || !discordId || !email || !password ||
-		firstname=="" || lastname=="" || birthday=="" || gender=="" || discordId=="" || email=="" || password=="") {
-		return res.status(400).json({ error: 'All fields are required' });
-	}
+	// if (!firstname || !lastname || !birthday || !gender || !discordId || !email || !password ||
+	// 	firstname=="" || lastname=="" || birthday=="" || gender=="" || discordId=="" || email=="" || password=="") {
+	// 	return res.status(400).json({ error: 'All fields are required' });
+	// }
 
 	try {
 		await firebase.auth().createUserWithEmailAndPassword(email, password);
@@ -81,11 +74,12 @@ app.post('/api/enroll', async (req, res) => {
 		const image = 'caterpie';
 		const status = 'pending';
 		const batch = 'pending';
+		const mname = middlename?middlename:'';
 		const userRef = firebase.database().ref(`users/${userId}`);
 
 		userRef.set({
 			firstname,
-			middlename,
+			mname,
 			lastname,
 			birthday,
 			gender,
@@ -98,6 +92,7 @@ app.post('/api/enroll', async (req, res) => {
 		});
 
 		res.status(200).json({ message: "User added successfully" });
+
 	} catch (error) {
 		console.error('Error adding a new user:', error);
 		res.status(500).json({ error: 'Unable to add a new user' });

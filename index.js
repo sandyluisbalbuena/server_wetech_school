@@ -30,14 +30,13 @@ app.get('/api/users', async (req, res) => {
 // Endpoint to add a new user
 app.post('/api/enroll', async (req, res) => {
 
-	const { firstname, middlename, lastname, birthday, gender, discordId, email, password } = req.body;
+	const { firstname, middlename, lastname, birthday, gender, discordId, email, password, username } = req.body;
 
 	// Check if any of the required fields is missing
 
 	const items = Object.entries(req.body);
 
 
-	// console.log(items);
 
 	const errorMess = [];
 
@@ -68,7 +67,7 @@ app.post('/api/enroll', async (req, res) => {
 	// }
 
 	try {
-		await firebase.auth().createUserWithEmailAndPassword(email, password);
+		await firebase.auth().createUserWithEmailAndPassword(username, password);
 		const userId = firebase.auth().currentUser.uid;
 		const role = 'student';
 		const image = 'caterpie';
@@ -88,7 +87,8 @@ app.post('/api/enroll', async (req, res) => {
 			role,
 			image,
 			status,
-			batch
+			batch,
+			email,
 		});
 
 		res.status(200).json({ message: "User added successfully" });

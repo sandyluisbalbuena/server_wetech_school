@@ -1,15 +1,14 @@
-const express = require('express')
-const app = express()
-const firebase = require('./firebase'); 
-const port = 8000
+const express = require("express");
+const app = express();
+const firebase = require("./firebase");
+const port = 8000;
 
-app.use(express.json())
-
+app.use(express.json());
 
 // Endpoint to get all users
-app.get('/api/users', async (req, res) => {
+app.get("/api/users", async (req, res) => {
 	try {
-		const usersSnapshot = await firebase.database().ref('users').once('value');
+		const usersSnapshot = await firebase.database().ref("users").once("value");
 		const usersData = usersSnapshot.val();
 
 		if (usersData) {
@@ -18,50 +17,55 @@ app.get('/api/users', async (req, res) => {
 		} else {
 			res.json([]);
 		}
-		
 	} catch (error) {
-		console.error('Error retrieving users:', error);
-		res.status(500).json({ error: 'Unable to retrieve users' });
+		console.error("Error retrieving users:", error);
+		res.status(500).json({ error: "Unable to retrieve users" });
 	}
 });
 
-
-
 // Endpoint to add a new user
-app.post('/api/enroll', async (req, res) => {
-
-	const { firstname, middlename, lastname, birthday, gender, discordId, email, password, username } = req.body;
+app.post("/api/enroll", async (req, res) => {
+	const {
+		firstname,
+		middlename,
+		lastname,
+		birthday,
+		gender,
+		discordId,
+		email,
+		password,
+		username,
+		courseId,
+	} = req.body;
 
 	const items = Object.entries(req.body);
 
 	const errorMess = [];
 
-	try{
+	try {
 		for (const [key, value] of items) {
-			if(!value)
-			{
-				errorMess.push([key, "is required.."])
+			if (!value) {
+				errorMess.push([key, "is required.."]);
 			}
 		}
-		
-	}catch(error){
-		console.log(error)
+	} catch (error) {
+		console.log(error);
 		return res.status(200).json({ error: error });
-
 	}
 
-	if(errorMess.length){
-		return res.status(505).json({ error:  errorMess});
+	if (errorMess.length) {
+		return res.status(505).json({ error: errorMess });
 	}
 
 	try {
 		await firebase.auth().createUserWithEmailAndPassword(username, password);
 		const userId = firebase.auth().currentUser.uid;
-		const role = 'student';
-		const image = 'caterpie';
-		const status = 'pending';
-		const batch = 'pending';
-		const mname = middlename?middlename:'';
+		const role = "student";
+		const image = "caterpie";
+		const status = "pending";
+		const batch = "pending";
+		const batchesId = { courseId: "pending" };
+		const mname = middlename ? middlename : "";
 		const userRef = firebase.database().ref(`users/${userId}`);
 
 		userRef.set({
@@ -77,16 +81,15 @@ app.post('/api/enroll', async (req, res) => {
 			status,
 			batch,
 			email,
+			batchesId,
 		});
 
 		res.status(200).json({ message: "User added successfully" });
-
 	} catch (error) {
-		console.error('Error adding a new user:', error);
-		res.status(500).json({ error: 'Unable to add a new user' });
+		console.error("Error adding a new user:", error);
+		res.status(500).json({ error: "Unable to add a new user" });
 	}
 });
-
 
 app.listen(port, () => {
 	console.log(`Example app listening on port ${port}`);

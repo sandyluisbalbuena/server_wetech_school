@@ -27,7 +27,7 @@ app.get("/api/users", async (req, res) => {
 app.post("/api/enroll", async (req, res) => {
 	const {
 		firstname,
-		middlename,
+		middlename: mname,
 		lastname,
 		birthday,
 		gender,
@@ -64,13 +64,13 @@ app.post("/api/enroll", async (req, res) => {
 		const image = "caterpie";
 		const status = "pending";
 		const batch = "pending";
-		const batchesId = { courseId: "pending" };
-		const mname = middlename ? middlename : "";
+		const batchesId = { courseId: courseId };
+		const middlename = mname ? mname : "";
 		const userRef = firebase.database().ref(`users/${userId}`);
 
 		userRef.set({
 			firstname,
-			mname,
+			middlename,
 			lastname,
 			birthday,
 			gender,

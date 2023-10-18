@@ -65,7 +65,7 @@ app.post("/api/enroll", async (req, res) => {
 		const status = "pending";
 		const batch = "pending";
 		const lvl = 1;
-		const batchesId = { courseId: courseId };
+		const batchesId = { unitId: courseId };
 		const middlename = mname ? mname : "";
 		const userRef = firebase.database().ref(`users/${userId}`);
 

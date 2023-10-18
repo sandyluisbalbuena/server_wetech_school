@@ -38,24 +38,24 @@ app.post("/api/enroll", async (req, res) => {
 		courseId,
 	} = req.body;
 
-	const items = Object.entries(req.body);
+	// const items = Object.entries(req.body);
 
-	const errorMess = [];
+	// const errorMess = [];
 
-	try {
-		for (const [key, value] of items) {
-			if (!value) {
-				errorMess.push([key, "is required.."]);
-			}
-		}
-	} catch (error) {
-		console.log(error);
-		return res.status(200).json({ error: error });
-	}
+	// try {
+	// 	for (const [key, value] of items) {
+	// 		if (!value) {
+	// 			errorMess.push([key, "is required.."]);
+	// 		}
+	// 	}
+	// } catch (error) {
+	// 	console.log(error);
+	// 	return res.status(200).json({ error: error });
+	// }
 
-	if (errorMess.length) {
-		return res.status(505).json({ error: errorMess });
-	}
+	// if (errorMess.length) {
+	// 	return res.status(505).json({ error: errorMess });
+	// }
 
 	try {
 		await firebase.auth().createUserWithEmailAndPassword(username, password);
@@ -64,6 +64,7 @@ app.post("/api/enroll", async (req, res) => {
 		const image = "caterpie";
 		const status = "pending";
 		const batch = "pending";
+		const lvl = 1;
 		const batchesId = { courseId: courseId };
 		const middlename = mname ? mname : "";
 		const userRef = firebase.database().ref(`users/${userId}`);
@@ -82,6 +83,7 @@ app.post("/api/enroll", async (req, res) => {
 			batch,
 			email,
 			batchesId,
+			lvl,
 		});
 
 		res.status(200).json({ message: "User added successfully" });
